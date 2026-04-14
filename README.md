@@ -14,6 +14,7 @@ to cancel their subscription before they actually do.
 - AUC: 85.17%
 
 ## Project Structure
+```
 customer-churn-prediction/
 ├── data/                    # Data files (not tracked)
 ├── notebooks/
@@ -26,6 +27,7 @@ customer-churn-prediction/
 ├── .gitignore
 ├── requirements.txt
 └── README.md
+```
 
 ## Technologies
 - Python
