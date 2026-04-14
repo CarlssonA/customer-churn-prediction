@@ -1,0 +1,24 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+code: ..
+command: >
+  python src/train.py
+  --data_path ${{inputs.data_path}}
+  --n_estimators ${{inputs.n_estimators}}
+  --learning_rate ${{inputs.learning_rate}}
+  --max_depth ${{inputs.max_depth}}
+
+inputs:
+  data_path:
+    type: uri_folder
+    path: azureml:churn-data:1
+  n_estimators: 100
+  learning_rate: 0.1
+  max_depth: 3
+
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+
+compute: azureml:cpu-cluster
+
+experiment_name: customer-churn-prediction
+description: Gradient Boosting with MLflow tracking
