@@ -1,0 +1,45 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+
+type: pipeline
+experiment_name: customer-churn-pipeline
+description: End-to-End Churn Prediction Pipeline
+
+inputs:
+  raw_data:
+    type: uri_folder
+    path: azureml:churn-data:1
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  prep:
+    type: command
+    code: ../src
+    command: >-
+      python prep.py
+      --raw_data ${{inputs.raw_data}}
+      --output_data ${{outputs.output_data}}
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+    outputs:
+      output_data:
+        type: uri_folder
+
+  train:
+    type: command
+    code: ../src
+    command: >-
+      python train.py
+      --data_path ${{inputs.data_path}}
+      --n_estimators 200
+      --learning_rate 0.05
+      --max_depth 5
+      --threshold 0.2
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    inputs:
+      data_path: ${{parent.jobs.prep.outputs.output_data}}
+    outputs:
+      model_output:
+        type: uri_folder
