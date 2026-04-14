@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
 
-name: churn-endpoint
+name: churn-endpoint-2
 auth_mode: key

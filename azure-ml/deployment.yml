@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 
 name: blue
-endpoint_name: churn-endpoint
+endpoint_name: churn-endpoint-2
 model: azureml:churn-prediction-model-v2:1
 instance_type: Standard_DS2_v2
 instance_count: 1
