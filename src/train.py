@@ -4,8 +4,7 @@ import mlflow
 import mlflow.sklearn
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import (accuracy_score, roc_auc_score, recall_score, classification_report)
-import os
-os.environ["MLFLOW_TRACKING_URI"] = "file:///C:/Users/Carlsson Arlt/VS Code/customer-churn-prediction/mlruns"
+
 
 def main():
     parser = argparse.ArgumentParser()
