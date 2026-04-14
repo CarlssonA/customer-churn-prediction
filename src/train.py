@@ -4,7 +4,9 @@ import mlflow
 import mlflow.sklearn
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import (accuracy_score, roc_auc_score, recall_score, classification_report)
-
+import os
+if not os.environ.get("AZUREML_RUN_ID"):
+    os.environ["MLFLOW_TRACKING_URI"] = "file:///C:/Users/Carlsson Arlt/VS Code/customer-churn-prediction/mlruns"
 
 def main():
     parser = argparse.ArgumentParser()
@@ -30,8 +32,8 @@ def main():
         )
         model.fit(X_train, y_train)
 
-        y_pred = model.predict(X_test)
         y_prob = model.predict_proba(X_test)[:, 1]
+        y_pred = (y_prob >= 0.3).astype(int)
 
         accuracy = accuracy_score(y_test, y_pred)
         auc      = roc_auc_score(y_test, y_prob)
