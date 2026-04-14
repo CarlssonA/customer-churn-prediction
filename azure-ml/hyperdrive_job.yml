@@ -1,0 +1,43 @@
+$schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
+
+type: sweep
+
+trial:
+  code: ../src
+  command: >-
+    python train.py
+    --data_path ${{inputs.data_path}}
+    --n_estimators ${{search_space.n_estimators}}
+    --learning_rate ${{search_space.learning_rate}}
+    --max_depth ${{search_space.max_depth}}
+  environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+
+inputs:
+  data_path:
+    type: uri_folder
+    path: azureml:churn-data:1
+
+search_space:
+  n_estimators:
+    type: choice
+    values: [100, 200, 300]
+  learning_rate:
+    type: choice
+    values: [0.05, 0.1, 0.2]
+  max_depth:
+    type: choice
+    values: [3, 5, 7]
+
+objective:
+  primary_metric: churn_recall
+  goal: maximize
+
+sampling_algorithm: random
+
+limits:
+  max_total_trials: 10
+  max_concurrent_trials: 2
+  timeout: 3600
+
+compute: azureml:cpu-cluster
+experiment_name: customer-churn-hyperdrive
